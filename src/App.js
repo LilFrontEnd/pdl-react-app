@@ -1,4 +1,7 @@
 import "./style.css";
+import "./components/Table/TableHead";
+import TableHeader from "./components/Table/TableHead";
+import Button from "./components/buttons/Button";
 
 function App() {
   const lists = () => {
@@ -79,18 +82,7 @@ function App() {
             </div>
             <div className="table-wrapper-scroll-y my-custom-scrollbar">
               <table className="table table-bordered" id="crudTable">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Case</th>
-                    <th>Cc#</th>
-                    <th>Court</th>
-                    <th>Hearing Status</th>
-                    <th>Hearing Result</th>
-                    <th>Next Hearing</th>
-                    <th>Buttons</th>
-                  </tr>
-                </thead>
+                <TableHeader />
                 <tbody id="tbody">
                   {lists().map((pdl) => {
                     return (
@@ -103,12 +95,8 @@ function App() {
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
                         <td>
-                          <button className="btn btn-primary btn-sm">
-                            Edit
-                          </button>
-                          <button className="btn btn-danger btn-sm">
-                            Delete
-                          </button>
+                          <Button label="Edits" color="primary" />
+                          <Button label="Delete" color="danger" />
                         </td>
                       </tr>
                     );
