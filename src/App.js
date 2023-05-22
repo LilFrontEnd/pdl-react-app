@@ -1,6 +1,49 @@
 import "./style.css";
 
 function App() {
+  const lists = () => {
+    const pdls = [
+      {
+        name: "Dodong test",
+        caseNo: "Dodong Case",
+        crimCaseNum: "Dodong CC",
+        court: "Dodong Court",
+        hearingStatus: "Dodong Hearing Status",
+        hearingResult: "Dodong Hearing Result",
+        nextHearing: "Dodong Next Hearing",
+      },
+      {
+        name: "Dodong another one",
+        caseNo: "Dodong Case",
+        crimCaseNum: "Dodong CC",
+        court: "Dodong Court",
+        hearingStatus: "Dodong Hearing Status",
+        hearingResult: "Dodong Hearing Result",
+        nextHearing: "Dodong Next Hearing",
+      },
+      {
+        name: "Dodong another two",
+        caseNo: "Dodong Case",
+        crimCaseNum: "Dodong CC",
+        court: "Dodong Court",
+        hearingStatus: "Dodong Hearing Status",
+        hearingResult: "Dodong Hearing Result",
+        nextHearing: "Dodong Next Hearing",
+      },
+      {
+        name: "Dodong another three",
+        caseNo: "Dodong Case",
+        crimCaseNum: "Dodong CC",
+        court: "Dodong Court",
+        hearingStatus: "Dodong Hearing Status",
+        hearingResult: "Dodong Hearing Result",
+        nextHearing: "Dodong Next Hearing",
+      },
+    ];
+
+    return pdls;
+  };
+
   return (
     <div className="app">
       <div className="app-title-container">
@@ -48,7 +91,29 @@ function App() {
                     <th>Buttons</th>
                   </tr>
                 </thead>
-                <tbody id="tbody"></tbody>
+                <tbody id="tbody">
+                  {lists().map((pdl) => {
+                    return (
+                      <tr>
+                        <td>{pdl.name}</td>
+                        <td>{pdl.caseNo}</td>
+                        <td>{pdl.crimCaseNum}</td>
+                        <td>{pdl.court}</td>
+                        <td>{pdl.hearingStatus}</td>
+                        <td>{pdl.hearingResult}</td>
+                        <td>{pdl.nextHearing}</td>
+                        <td>
+                          <button className="btn btn-primary btn-sm">
+                            Edit
+                          </button>
+                          <button className="btn btn-danger btn-sm">
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </table>
             </div>
           </div>
