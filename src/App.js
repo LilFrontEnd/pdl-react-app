@@ -1,7 +1,9 @@
 import "./style.css";
 import "./components/Table/TableHead";
 import TableHeader from "./components/Table/TableHead";
-import Button from "./components/buttons/Button";
+// import Button from "./components/buttons/Button";
+import Edit from "./components/buttons/Edit";
+import Delete from "./components/buttons/Delete";
 
 function App() {
   const lists = () => {
@@ -35,6 +37,15 @@ function App() {
       },
       {
         name: "Dodong another three",
+        caseNo: "Dodong Case",
+        crimCaseNum: "Dodong CC",
+        court: "Dodong Court",
+        hearingStatus: "Dodong Hearing Status",
+        hearingResult: "Dodong Hearing Result",
+        nextHearing: "Dodong Next Hearing",
+      },
+      {
+        name: "Dodong on fire",
         caseNo: "Dodong Case",
         crimCaseNum: "Dodong CC",
         court: "Dodong Court",
@@ -95,8 +106,11 @@ function App() {
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
                         <td>
-                          <Button label="Edits" color="primary" />
-                          <Button label="Delete" color="danger" />
+                          {/* <Button label="Edits" color="warning" /> */}
+                          {/* <button className="btn btn-warning m-2 btn-sm" data-bs-toggle="modal" data-bs-target="#form">Edit</button> */}
+                          <Edit />
+                          {/* <Button label="Delete" color="danger" /> */}
+                          <Delete />
                         </td>
                       </tr>
                     );
