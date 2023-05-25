@@ -2,11 +2,9 @@ import "./style.css";
 import swal from "sweetalert";
 import { db } from "./firebase";
 import { uid } from "uid";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, remove } from "firebase/database";
 import { useState, useEffect } from "react";
 import TableHeader from "./components/Table/TableHead";
-import Edit from "./components/buttons/Edit";
-import Delete from "./components/buttons/Delete";
 
 function App() {
   const [name, setName] = useState(null);
@@ -23,9 +21,14 @@ function App() {
   useEffect(() => {
     onValue(ref(db), (snapshot) => {
       const pdlData = snapshot.val();
-      const pdls = Object.values(pdlData.pdlData);
 
-      if (pdlData.pdlData) {
+      if (!pdlData) {
+        return [];
+      }
+
+      const pdls = Object.values(pdlData);
+
+      if (pdlData) {
         setPdls([...pdls]);
       }
     });
@@ -59,7 +62,7 @@ function App() {
   // create
   const handleAdd = () => {
     const pdlId = uid();
-    set(ref(db, `pdlData/${pdlId}`), {
+    set(ref(db, `${pdlId}`), {
       name: name,
       case1: case1,
       crimCase: crimCase,
@@ -90,6 +93,22 @@ function App() {
         }, 1100);
       })
       .catch((error) => {});
+  };
+
+  const handleDelete = (id) => {
+    const pdlRef = ref(db, `${id}`);
+
+    remove(pdlRef).then(() => {
+      swal({
+        title: "Success!",
+        text: "PDL has been removed!",
+        icon: "success",
+        button: false,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1100);
+    });
   };
 
   return (
@@ -140,8 +159,13 @@ function App() {
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
                         <td>
-                          <Edit />
-                          <Delete />
+                          <button
+                            id="deletData"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(pdl.pdlId)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
