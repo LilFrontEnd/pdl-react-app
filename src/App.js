@@ -14,6 +14,7 @@ function App() {
   const [hearingStatus, setHearingStatus] = useState(null);
   const [hearingResult, setHearingResult] = useState(null);
   const [nextHearing, setNextHearing] = useState(null);
+  const [pdlId, setPdlId] = useState(null);
 
   const [pdls, setPdls] = useState([]);
 
@@ -57,6 +58,51 @@ function App() {
     if (id === "nextHearing") {
       setNextHearing(value);
     }
+  };
+
+  const handleUpdate = (pdlId) => {
+    set(ref(db, `${pdlId}`), {
+      name: name,
+      case1: case1,
+      crimCase: crimCase,
+      court1: court1,
+      hearingStatus: hearingStatus,
+      hearingResult: hearingResult,
+      nextHearing: nextHearing,
+      pdlId,
+    })
+      .then(() => {
+        // Data saved successfully!
+        swal({
+          title: "Success!",
+          text: "Data successfully updated!",
+          icon: "success",
+          button: false,
+        });
+        setName("");
+        setCase("");
+        setCrimCase("");
+        setCourt("");
+        setHearingStatus("");
+        setHearingResult("");
+        setNextHearing("");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1100);
+      })
+      .catch((error) => {});
+  };
+
+  const handleEdit = (id, pdl) => {
+    setCase(pdl.case1);
+    setName(pdl.name);
+    setCrimCase(pdl.crimCase);
+    setCourt(pdl.court1);
+    setHearingStatus(pdl.hearingStatus);
+    setHearingResult(pdl.hearingResult);
+    setNextHearing(pdl.nextHearing);
+    setPdlId(pdl.pdlId);
   };
 
   // create
@@ -159,6 +205,15 @@ function App() {
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
                         <td>
+                          <button
+                            className="btn btn-warning m-2 btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#form"
+                            onClick={() => handleEdit(pdl.pdlId, pdl)}
+                          >
+                            Edit
+                          </button>
+                          ;
                           <button
                             id="deletData"
                             className="btn btn-danger btn-sm"
@@ -301,7 +356,11 @@ function App() {
                   >
                     Add Data
                   </button>
-                  <button className="btn btn-primary" id="Update">
+                  <button
+                    className="btn btn-primary"
+                    id="Update"
+                    onClick={() => handleUpdate(pdlId)}
+                  >
                     Update
                   </button>
                 </div>
