@@ -2,73 +2,11 @@ import "./style.css";
 import swal from "sweetalert";
 import { db } from "./firebase";
 import { uid } from "uid";
-import {
-  ref,
-  set,
-  onValue,
-} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { ref, set, onValue } from "firebase/database";
 import { useState, useEffect } from "react";
-// import "./components/Table/TableHead";
 import TableHeader from "./components/Table/TableHead";
-// import Button from "./components/buttons/Button";
-// import Edit from "./components/buttons/Edit";
-// import Delete from "./components/buttons/Delete";
 
 function App() {
-  const lists = () => {
-    const pdls = [
-      {
-        name: "Dodong test",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another one",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another two",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another three",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong on fire",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-    ];
-
-    return pdls;
-  };
-
-  // write
-
   const [name, setName] = useState(null);
   const [case1, setCase] = useState(null);
   const [crimCase, setCrimCase] = useState(null);
@@ -83,22 +21,7 @@ function App() {
   useEffect(() => {
     onValue(ref(db), (snapshot) => {
       const pdlData = snapshot.val();
-
-      // const pdls = [
-      //   {
-      //     name: "Dodong test",
-      //     caseNo: "Dodong Case",
-      //     crimCaseNum: "Dodong CC",
-      //     court: "Dodong Court",
-      //     hearingStatus: "Dodong Hearing Status",
-      //     hearingResult: "Dodong Hearing Result",
-      //     nextHearing: "Dodong Next Hearing",
-      //   },
-      // ];
-
       const pdls = Object.values(pdlData.pdlData);
-
-      console.log("pdls :>> ", pdls);
 
       if (pdlData.pdlData) {
         setPdls([...pdls]);
@@ -159,15 +82,9 @@ function App() {
         setHearingStatus("");
         setHearingResult("");
         setNextHearing("");
-        // setTimeout(() => {
-        //   location.reload();
-        // }, 1100);
       })
       .catch((error) => {});
   };
-
-  // update
-  // delete
 
   return (
     <div className="app">
