@@ -5,6 +5,8 @@ import { uid } from "uid";
 import { ref, set, onValue } from "firebase/database";
 import { useState, useEffect } from "react";
 import TableHeader from "./components/Table/TableHead";
+import Edit from "./components/buttons/Edit";
+import Delete from "./components/buttons/Delete";
 
 function App() {
   const [name, setName] = useState(null);
@@ -57,7 +59,7 @@ function App() {
   // create
   const handleAdd = () => {
     const pdlId = uid();
-    set(ref(db, "pdlData/" + `/${pdlId}`), {
+    set(ref(db, `pdlData/${pdlId}`), {
       name: name,
       case1: case1,
       crimCase: crimCase,
@@ -138,11 +140,8 @@ function App() {
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
                         <td>
-                          {/* <Button label="Edits" color="warning" /> */}
-                          {/* <button className="btn btn-warning m-2 btn-sm" data-bs-toggle="modal" data-bs-target="#form">Edit</button> */}
-                          {/* <Edit /> */}
-                          {/* <Button label="Delete" color="danger" /> */}
-                          {/* <Delete /> */}
+                          <Edit />
+                          <Delete />
                         </td>
                       </tr>
                     );
