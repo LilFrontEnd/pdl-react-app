@@ -1,63 +1,161 @@
 import "./style.css";
-import "./components/Table/TableHead";
-import TableHeader from "./components/Table/TableHead";
+import swal from 'sweetalert';
+import { db } from "./firebase";
+import { uid } from "uid";
+import { getDatabase, ref, set, update, push, child, onValue, remove } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { useState, useEffect } from "react";
+// import "./components/Table/TableHead";
+// import TableHeader from "./components/Table/TableHead";
 // import Button from "./components/buttons/Button";
-import Edit from "./components/buttons/Edit";
-import Delete from "./components/buttons/Delete";
+// import Edit from "./components/buttons/Edit";
+// import Delete from "./components/buttons/Delete";
 
 function App() {
-  const lists = () => {
-    const pdls = [
-      {
-        name: "Dodong test",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another one",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another two",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong another three",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-      {
-        name: "Dodong on fire",
-        caseNo: "Dodong Case",
-        crimCaseNum: "Dodong CC",
-        court: "Dodong Court",
-        hearingStatus: "Dodong Hearing Status",
-        hearingResult: "Dodong Hearing Result",
-        nextHearing: "Dodong Next Hearing",
-      },
-    ];
+  // const lists = () => {
+  //   const pdls = [
+  //     {
+  //       name: "Dodong test",
+  //       caseNo: "Dodong Case",
+  //       crimCaseNum: "Dodong CC",
+  //       court: "Dodong Court",
+  //       hearingStatus: "Dodong Hearing Status",
+  //       hearingResult: "Dodong Hearing Result",
+  //       nextHearing: "Dodong Next Hearing",
+  //     },
+  //     {
+  //       name: "Dodong another one",
+  //       caseNo: "Dodong Case",
+  //       crimCaseNum: "Dodong CC",
+  //       court: "Dodong Court",
+  //       hearingStatus: "Dodong Hearing Status",
+  //       hearingResult: "Dodong Hearing Result",
+  //       nextHearing: "Dodong Next Hearing",
+  //     },
+  //     {
+  //       name: "Dodong another two",
+  //       caseNo: "Dodong Case",
+  //       crimCaseNum: "Dodong CC",
+  //       court: "Dodong Court",
+  //       hearingStatus: "Dodong Hearing Status",
+  //       hearingResult: "Dodong Hearing Result",
+  //       nextHearing: "Dodong Next Hearing",
+  //     },
+  //     {
+  //       name: "Dodong another three",
+  //       caseNo: "Dodong Case",
+  //       crimCaseNum: "Dodong CC",
+  //       court: "Dodong Court",
+  //       hearingStatus: "Dodong Hearing Status",
+  //       hearingResult: "Dodong Hearing Result",
+  //       nextHearing: "Dodong Next Hearing",
+  //     },
+  //     {
+  //       name: "Dodong on fire",
+  //       caseNo: "Dodong Case",
+  //       crimCaseNum: "Dodong CC",
+  //       court: "Dodong Court",
+  //       hearingStatus: "Dodong Hearing Status",
+  //       hearingResult: "Dodong Hearing Result",
+  //       nextHearing: "Dodong Next Hearing",
+  //     },
+  //   ];
 
-    return pdls;
+  //   return pdls;
+  // };
+  
+  // write
+  
+  const [name, setName] = useState(null);
+  const [case1, setCase] = useState(null);
+  const [crimCase, setCrimCase] = useState(null);
+  const [court1, setCourt] = useState(null);
+  const [hearingStatus, setHearingStatus] = useState(null);
+  const [hearingResult, setHearingResult] = useState(null);
+  const [nextHearing, setNextHearing] =  useState(null);
+
+
+  const handleInputChange = (e) => {
+    const {id, value} = e.target;
+    if (id === "name") {
+      setName(value);
+    }
+    if (id === "case1") {
+      setCase(value);
+    }
+    if (id === "crimCase") {
+      setCrimCase(value);
+    }
+    if (id === "court1") {
+      setCourt(value);
+    }
+    if (id === "hearingStatus") {
+      setHearingStatus(value);
+    }
+    if (id === "hearingResult") {
+      setHearingResult(value);
+    }
+    if (id === "nextHearing") {
+      setNextHearing(value);
+    }
   };
 
+  const handleSubmit = () => {
+    // let obj = {
+    //   name: name,
+    //   case1: case1,
+    //   crimCase: crimCase,
+    //   court1:  court1,
+    //   hearingStatus: hearingStatus,
+    //   hearingResult: hearingResult,
+    //   nextHearing: nextHearing,
+    // }
+    // const pdlId = push(child(ref(db), "pdlData")).key;
+    // const updates = {};
+    // updates['/' + pdlId] = obj
+    // return update(ref(db), updates);
+
+    const pdlId = uid();
+    // const pdlId = push(child(ref(db), "pdlData")).key;
+    set(ref(db, "pdlData/" + `/${pdlId}`), {
+      name: name,
+      case1: case1,
+      crimCase: crimCase,
+      court1:  court1,
+      hearingStatus: hearingStatus,
+      hearingResult: hearingResult,
+      nextHearing: nextHearing,
+      pdlId,
+    })
+    .then(() => {
+      // Data saved successfully!
+      swal({
+        title: "Success!",
+        text: "Data successfully submitted!",
+        icon: "success",
+        button: true,
+      });
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 1100);
+    })
+    .catch((error) => {
+      // The write failed...
+      // validateForm() = false
+    });
+    setName("");
+    setCase("");
+    setCrimCase("");
+    setCourt("");
+    setHearingStatus("");
+    setHearingResult("");
+    setNextHearing("");
+  }
+
+  // create
+  // update
+  // delete
+
+  
   return (
     <div className="app">
       <div className="app-title-container">
@@ -93,9 +191,21 @@ function App() {
             </div>
             <div className="table-wrapper-scroll-y my-custom-scrollbar">
               <table className="table table-bordered" id="crudTable">
-                <TableHeader />
+                {/* <TableHeader /> */}
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Case</th>
+                    <th>Cc#</th>
+                    <th>Court</th>
+                    <th>Hearing Status</th>
+                    <th>Hearing Result</th>
+                    <th>Next Hearing</th>
+                    <th>Buttons</th>
+                  </tr>
+                </thead>
                 <tbody id="tbody">
-                  {lists().map((pdl) => {
+                  {/* {lists().map((pdl) => {
                     return (
                       <tr>
                         <td>{pdl.name}</td>
@@ -105,16 +215,16 @@ function App() {
                         <td>{pdl.hearingStatus}</td>
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
-                        <td>
+                        <td> */}
                           {/* <Button label="Edits" color="warning" /> */}
                           {/* <button className="btn btn-warning m-2 btn-sm" data-bs-toggle="modal" data-bs-target="#form">Edit</button> */}
-                          <Edit />
+                          {/* <Edit /> */}
                           {/* <Button label="Delete" color="danger" /> */}
-                          <Delete />
-                        </td>
+                          {/* <Delete /> */}
+                        {/* </td>
                       </tr>
                     );
-                  })}
+                  })} */}
                 </tbody>
               </table>
             </div>
@@ -153,6 +263,8 @@ function App() {
                       className="form-control"
                       id="name"
                       placeholder="Enter Name"
+                      value={name}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="nameError" className="error"></small>
                   </div>
@@ -164,6 +276,8 @@ function App() {
                       className="form-control"
                       id="case1"
                       placeholder="Case of Pdl"
+                      value={case1}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="caseError" className="error"></small>
                   </div>
@@ -175,6 +289,8 @@ function App() {
                       className="form-control"
                       id="crimCase"
                       placeholder="Enter Case Number"
+                      value={crimCase}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="ccError" className="error"></small>
                   </div>
@@ -186,6 +302,8 @@ function App() {
                       className="form-control"
                       id="court1"
                       placeholder="RTC Court of Pdl"
+                      value={court1}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="courtError" className="error"></small>
                   </div>
@@ -197,6 +315,8 @@ function App() {
                       className="form-control"
                       id="hearingStatus"
                       placeholder="Enter Hearing Status"
+                      value={hearingStatus}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="hsError" className="error"></small>
                   </div>
@@ -208,6 +328,8 @@ function App() {
                       className="form-control"
                       id="hearingResult"
                       placeholder="Enter Hearing Result"
+                      value={hearingResult}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="hrError" className="error"></small>
                   </div>
@@ -219,12 +341,14 @@ function App() {
                       className="form-control"
                       id="nextHearing"
                       placeholder="Enter Next Hearing"
+                      value={nextHearing}
+                      onChange={(e) => handleInputChange(e)}
                     />
                     <small id="nhError" className="error"></small>
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button className="btn btn-success" id="Submit" type="Submit">
+                  <button onClick={()=>handleSubmit()} className="btn btn-success" id="Submit" type="Submit">
                     Add Data
                   </button>
                   <button className="btn btn-primary" id="Update">
