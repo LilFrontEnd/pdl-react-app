@@ -55,7 +55,7 @@ function App() {
   };
 
   // create
-  const handleSubmit = () => {
+  const handleAdd = () => {
     const pdlId = uid();
     set(ref(db, "pdlData/" + `/${pdlId}`), {
       name: name,
@@ -73,7 +73,7 @@ function App() {
           title: "Success!",
           text: "Data successfully submitted!",
           icon: "success",
-          button: true,
+          button: false,
         });
         setName("");
         setCase("");
@@ -82,6 +82,10 @@ function App() {
         setHearingStatus("");
         setHearingResult("");
         setNextHearing("");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1100);
       })
       .catch((error) => {});
   };
@@ -267,7 +271,7 @@ function App() {
                 </div>
                 <div className="modal-footer">
                   <button
-                    onClick={() => handleSubmit()}
+                    onClick={() => handleAdd()}
                     className="btn btn-success"
                     id="Submit"
                     type="Submit"
