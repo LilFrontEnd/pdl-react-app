@@ -5,7 +5,7 @@ import { uid } from "uid";
 import { getDatabase, ref, set, update, push, child, onValue, remove } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 import { useState, useEffect } from "react";
 // import "./components/Table/TableHead";
-// import TableHeader from "./components/Table/TableHead";
+import TableHeader from "./components/Table/TableHead";
 // import Button from "./components/buttons/Button";
 // import Edit from "./components/buttons/Edit";
 // import Delete from "./components/buttons/Delete";
@@ -73,6 +73,31 @@ function App() {
   const [hearingResult, setHearingResult] = useState(null);
   const [nextHearing, setNextHearing] =  useState(null);
 
+  const [names, setNames] = useEffect([]);
+  const [cases, setCases] = useEffect([]);
+  const [crimCases, setCrimCases] = useEffect([]);
+  const [courts, setCourts] = useEffect([]);
+  const [hearingStatus1, setHearingStatus1] = useEffect([]);
+  const [hearingResult1, setHearingResult1] = useEffect([]);
+  const [nextHearings, setNextHearings] =  useEffect([]);
+
+  // read
+  useEffect(() => {
+    onValue(ref(db), (snapshot) => {
+      const pdlData = snapshot.val();
+      if (pdlData !== null) {
+        Object.values(pdlData).map((name, case1, crimCase, court1, hearingStatus, hearingResult, nextHearing) => {
+          setNames((oldArray)  => [...oldArray, name]);
+          setCases((oldArray) => [...oldArray, case1]);
+          setCrimCases((oldArray) => [...oldArray, crimCase]);
+          setCourts((oldArray) => [...oldArray, court1]);
+          setHearingStatus1((oldArray) => [...oldArray, hearingStatus]);
+          setHearingResult1((oldArray) => [...oldArray, hearingResult]);
+          setNextHearings((oldArray) => [...oldArray, nextHearing]);
+        });
+      }
+    });
+  }, []);
 
   const handleInputChange = (e) => {
     const {id, value} = e.target;
@@ -99,6 +124,7 @@ function App() {
     }
   };
 
+ // create
   const handleSubmit = () => {
     // let obj = {
     //   name: name,
@@ -134,24 +160,23 @@ function App() {
         icon: "success",
         button: true,
       });
+      setName("");
+      setCase("");
+      setCrimCase("");
+      setCourt("");
+      setHearingStatus("");
+      setHearingResult("");
+      setNextHearing("");
       // setTimeout(() => {
       //   location.reload();
       // }, 1100);
     })
     .catch((error) => {
-      // The write failed...
-      // validateForm() = false
+      
     });
-    setName("");
-    setCase("");
-    setCrimCase("");
-    setCourt("");
-    setHearingStatus("");
-    setHearingResult("");
-    setNextHearing("");
-  }
+    
+  };
 
-  // create
   // update
   // delete
 
@@ -191,21 +216,9 @@ function App() {
             </div>
             <div className="table-wrapper-scroll-y my-custom-scrollbar">
               <table className="table table-bordered" id="crudTable">
-                {/* <TableHeader /> */}
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Case</th>
-                    <th>Cc#</th>
-                    <th>Court</th>
-                    <th>Hearing Status</th>
-                    <th>Hearing Result</th>
-                    <th>Next Hearing</th>
-                    <th>Buttons</th>
-                  </tr>
-                </thead>
+                <TableHeader />
                 <tbody id="tbody">
-                  {/* {lists().map((pdl) => {
+                  {lists().map((pdl) => {
                     return (
                       <tr>
                         <td>{pdl.name}</td>
@@ -215,16 +228,16 @@ function App() {
                         <td>{pdl.hearingStatus}</td>
                         <td>{pdl.hearingResult}</td>
                         <td>{pdl.nextHearing}</td>
-                        <td> */}
+                        <td>
                           {/* <Button label="Edits" color="warning" /> */}
                           {/* <button className="btn btn-warning m-2 btn-sm" data-bs-toggle="modal" data-bs-target="#form">Edit</button> */}
                           {/* <Edit /> */}
                           {/* <Button label="Delete" color="danger" /> */}
                           {/* <Delete /> */}
-                        {/* </td>
+                        </td>
                       </tr>
                     );
-                  })} */}
+                  })}
                 </tbody>
               </table>
             </div>
